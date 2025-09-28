@@ -4,7 +4,7 @@ services:
     ports:
       - "8080:27017"
     volumes:
-      - mongo-data:/data/db
+      - ./mongo_data:/data/db
   backend:
     build: "./backend"
     ports:
