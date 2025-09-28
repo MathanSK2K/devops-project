@@ -9,8 +9,9 @@ jobs:
     runs-on: ubuntu-latest
 
     services:
-      image: mongo
-      ports: ["27017:27017"]
+      mongo:
+        image: mongo
+        ports: ['27017:27017']
 
     steps:
       - name: Checkout code
@@ -37,6 +38,7 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
+    needs: mongo-init
 
     steps:
       - name: Checkout Repo
@@ -48,7 +50,9 @@ jobs:
           node-version: "20"
 
       - name: Install BE Dependencies
+        working-directory: ./backend
         run : npm install
 
       - name: Run BE Tests
+        working-directory: ./backend
         run: npm test
