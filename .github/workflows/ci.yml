@@ -5,8 +5,12 @@ on:
     branches: [main]
 
 jobs:
-  mongo-init:
+  mongo-init-tests:
     runs-on: ubuntu-latest
+
+    env:
+      PORT: ${ { secrets.PORT } }
+      MONGO_URI: ${ { secrets.MONGO_URI } }
 
     services:
       mongo:
@@ -35,27 +39,6 @@ jobs:
         run: |
           npm install
           node ./seedTasksData.js
-
-  test:
-    runs-on: ubuntu-latest
-    needs: mongo-init
-
-    env:
-      PORT: ${ { secrets.PORT } }
-      MONGO_URI: ${ { secrets.MONGO_URI } }
-
-    steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v5
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: "20"
-
-      - name: Install BE Dependencies
-        working-directory: ./backend
-        run : npm install
 
       - name: Run BE Tests
         working-directory: ./backend
